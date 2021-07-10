@@ -3,6 +3,7 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 import {Header, Input, Button, Gap, Loading} from '../../components';
 import {colors, useForm} from '../../utils';
 import {Fire} from '../../configs';
+import {showMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -22,13 +23,24 @@ const Register = ({navigation}) => {
         console.log('register success', success);
         setLoading(false);
         setForm('reset');
+        const data = {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        };
+        Fire.database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
       })
       .catch(error => {
-        const errorMessage = error.message;
         setLoading(false);
-        console.log('error register', errorMessage);
+        showMessage({
+          message: error.message,
+          type: 'default',
+          backgroundColor: colors.warning,
+          color: colors.white,
+        });
       });
-    console.log(form);
 
     // navigation.navigate('UploadPhoto')
   };

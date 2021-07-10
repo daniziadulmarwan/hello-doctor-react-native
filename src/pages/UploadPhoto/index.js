@@ -1,25 +1,47 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ILNullPhoto} from '../../assets';
 import {Header, Button, Link, Gap} from '../../components';
-import {ICBtnAddPhoto} from '../../assets';
+import {ICBtnAddPhoto, ICBtnRmvPhoto} from '../../assets';
 import {colors, fonts} from '../../utils';
+import * as ImagePicker from 'react-native-image-picker';
+import {showMessage} from 'react-native-flash-message';
 
 const UploadPhoto = ({navigation}) => {
+  const [hasPhoto, setHasPhoto] = useState(false);
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  const getImage = () => {
+    ImagePicker.launchImageLibrary({}, response => {
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'ops, you did not choose any photo',
+          type: 'default',
+          backgroundColor: colors.warning,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
+    });
+  };
   return (
     <View style={styles.page}>
       <Header title="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.profile}>
-          <View style={styles.avatarWrapper}>
-            <Image source={ILNullPhoto} style={styles.avatar} />
-            <ICBtnAddPhoto style={styles.addPhoto} />
-          </View>
+          <TouchableOpacity style={styles.avatarWrapper} onPress={getImage}>
+            <Image source={photo} style={styles.avatar} />
+            {hasPhoto && <ICBtnRmvPhoto style={styles.addPhoto} />}
+            {!hasPhoto && <ICBtnAddPhoto style={styles.addPhoto} />}
+          </TouchableOpacity>
           <Text style={styles.name}>Shayna Melinda</Text>
           <Text style={styles.profession}>Product Designer</Text>
         </View>
         <View>
           <Button
+            disable={!hasPhoto}
             title="Upload and Continue"
             onPress={() => navigation.replace('MainApp')}
           />
@@ -66,6 +88,7 @@ const styles = StyleSheet.create({
   avatar: {
     height: 110,
     width: 110,
+    borderRadius: 110 / 2,
   },
   addPhoto: {
     position: 'absolute',
