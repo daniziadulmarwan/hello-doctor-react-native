@@ -40,7 +40,7 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Get Started"
+        name="GetStarted"
         component={GetStarted}
         options={{headerShown: false}}
       />
