@@ -4,14 +4,18 @@ import {ILNullPhoto} from '../../assets';
 import {Header, Button, Link, Gap} from '../../components';
 import {ICBtnAddPhoto, ICBtnRmvPhoto} from '../../assets';
 import {colors, fonts} from '../../utils';
-import * as ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
+import {Fire} from '../../configs';
 
-const UploadPhoto = ({navigation}) => {
+const UploadPhoto = ({navigation, route}) => {
+  const {fullName, profession, uid} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
+  const [photoForDb, setPhotoForDb] = useState('');
+
   const getImage = () => {
-    ImagePicker.launchImageLibrary({}, response => {
+    launchImageLibrary({}, response => {
       console.log(response);
       if (response.didCancel || response.error) {
         showMessage({
@@ -21,12 +25,24 @@ const UploadPhoto = ({navigation}) => {
           color: colors.white,
         });
       } else {
-        let source = {uri: response.uri};
+        let source = {uri: response.assets[0].uri};
         setPhoto(source);
         setHasPhoto(true);
+        setPhotoForDb(
+          `data:${response.assets[0].type};base64, ${response.assets[0].data}`,
+        );
       }
     });
   };
+
+  const updateAndContinue = () => {
+    Fire.database()
+      .ref('users/' + uid + '/')
+      .update({photo: photoForDb});
+
+    navigation.replace('MainApp');
+  };
+
   return (
     <View style={styles.page}>
       <Header title="Upload Photo" onPress={() => navigation.goBack()} />
@@ -37,14 +53,14 @@ const UploadPhoto = ({navigation}) => {
             {hasPhoto && <ICBtnRmvPhoto style={styles.addPhoto} />}
             {!hasPhoto && <ICBtnAddPhoto style={styles.addPhoto} />}
           </TouchableOpacity>
-          <Text style={styles.name}>Shayna Melinda</Text>
-          <Text style={styles.profession}>Product Designer</Text>
+          <Text style={styles.name}>{fullName}</Text>
+          <Text style={styles.profession}>{profession}</Text>
         </View>
         <View>
           <Button
             disable={!hasPhoto}
             title="Upload and Continue"
-            onPress={() => navigation.replace('MainApp')}
+            onPress={updateAndContinue}
           />
           <Gap height={30} />
           <Link
