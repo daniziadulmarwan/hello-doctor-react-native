@@ -12,6 +12,7 @@ const UploadPhoto = ({navigation}) => {
   const [photo, setPhoto] = useState(ILNullPhoto);
   const getImage = () => {
     ImagePicker.launchImageLibrary({}, response => {
+      console.log(response);
       if (response.didCancel || response.error) {
         showMessage({
           message: 'ops, you did not choose any photo',
@@ -20,7 +21,7 @@ const UploadPhoto = ({navigation}) => {
           color: colors.white,
         });
       } else {
-        const source = {uri: response.uri};
+        let source = {uri: response.uri};
         setPhoto(source);
         setHasPhoto(true);
       }
