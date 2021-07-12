@@ -1,14 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
-import {DMUserImageProfile, ICBtnRmvPhoto} from '../../../assets';
+import {ICBtnRmvPhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Profile = ({avatar, name, desc}) => {
+const Profile = ({avatar, name, desc, isRemove}) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
         <Image source={avatar} style={styles.avatar} />
-        <ICBtnRmvPhoto style={styles.removePhoto} />
+        {isRemove && <ICBtnRmvPhoto style={styles.removePhoto} />}
       </View>
       {name && (
         <View>
