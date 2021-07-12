@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DMUserImageProfile, ILNullPhoto} from '../../assets';
+import {ILNullPhoto} from '../../assets';
 import {Header, Profile, List, Gap} from '../../components';
 import {colors, getData} from '../../utils';
 
@@ -13,20 +13,19 @@ const UserProfile = ({navigation}) => {
   useEffect(() => {
     getData('user').then(res => {
       const data = res;
-      data.photo = {uri: res.uri};
+      data.photo = {uri: res.photo};
       setProfile(data);
     });
   }, []);
   return (
     <View style={styles.page}>
-      <Header title="Profile" />
+      <Header title="Profile" onPress={() => navigation.goBack()} />
       <Gap height={10} />
       {profile.fullName.length > 0 && (
         <Profile
-          avatar={DMUserImageProfile}
+          avatar={profile.photo}
           name={profile.fullName}
           desc={profile.profession}
-          avatar={profile.photo}
         />
       )}
       <Gap height={14} />
