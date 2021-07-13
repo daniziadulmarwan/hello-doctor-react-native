@@ -6,19 +6,18 @@ import {fonts} from '../../utils';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
-    setTimeout(() => {
-      Fire.auth().onAuthStateChanged(user => {
+    const unsubscribe = Fire.auth().onAuthStateChanged(user => {
+      setTimeout(() => {
         if (user) {
-          //user login
           navigation.replace('MainApp');
         } else {
-          //user not login
           navigation.replace('GetStarted');
         }
-      });
-      navigation.replace('GetStarted');
-    }, 3000);
-  }, []);
+      }, 3000);
+    });
+
+    return () => unsubscribe();
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <ILogo />
