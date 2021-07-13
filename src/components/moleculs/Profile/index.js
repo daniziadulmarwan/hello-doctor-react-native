@@ -1,15 +1,23 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ICBtnRmvPhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Profile = ({avatar, name, desc, isRemove}) => {
+const Profile = ({avatar, name, desc, isRemove, onPress}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.avatarWrapper}>
-        <Image source={avatar} style={styles.avatar} />
-        {isRemove && <ICBtnRmvPhoto style={styles.removePhoto} />}
-      </View>
+      {!isRemove && (
+        <View style={styles.avatarWrapper}>
+          <Image source={avatar} style={styles.avatar} />
+          {isRemove && <ICBtnRmvPhoto style={styles.removePhoto} />}
+        </View>
+      )}
+      {isRemove && (
+        <TouchableOpacity style={styles.avatarWrapper} onPress={onPress}>
+          <Image source={avatar} style={styles.avatar} />
+          {isRemove && <ICBtnRmvPhoto style={styles.removePhoto} />}
+        </TouchableOpacity>
+      )}
       {name && (
         <View>
           <Text style={styles.name}>{name}</Text>
