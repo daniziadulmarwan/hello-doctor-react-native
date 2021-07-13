@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {Header, Input, Button, Gap, Loading} from '../../components';
-import {colors, getData, storeData, useForm} from '../../utils';
+import {colors, storeData, useForm} from '../../utils';
 import {Fire} from '../../configs';
 import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -12,16 +13,15 @@ const Register = ({navigation}) => {
     email: '',
     password: '',
   });
-
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onContinue = () => {
-    setLoading(true);
+    dispatch({type: 'SET_LOADING', value: false});
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
         console.log('register success', success);
-        setLoading(false);
+        dispatch({type: 'SET_LOADING', value: false});
         setForm('reset');
         const data = {
           fullName: form.fullName,
@@ -37,7 +37,7 @@ const Register = ({navigation}) => {
         navigation.navigate('UploadPhoto', data);
       })
       .catch(error => {
-        setLoading(false);
+        dispatch({type: 'SET_LOADING', value: false});
         showMessage({
           message: error.message,
           type: 'default',
@@ -48,41 +48,39 @@ const Register = ({navigation}) => {
   };
 
   return (
-    <>
-      <View style={styles.page}>
-        <Header onPress={() => navigation.goBack()} title="Daftar Akun" />
-        <View style={styles.content}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Input
-              label="Full Name"
-              value={form.fullName}
-              onChangeText={value => setForm('fullName', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Pekerjaan"
-              value={form.profession}
-              onChangeText={value => setForm('profession', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Email"
-              value={form.email}
-              onChangeText={value => setForm('email', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Password"
-              value={form.password}
-              onChangeText={value => setForm('password', value)}
-            />
-            <Gap height={40} />
-            <Button title="Continue" onPress={onContinue} />
-          </ScrollView>
-        </View>
+    <View style={styles.page}>
+      <Header onPress={() => navigation.goBack()} title="Daftar Akun" />
+      <View style={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Input
+            label="Full Name"
+            value={form.fullName}
+            onChangeText={value => setForm('fullName', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Pekerjaan"
+            value={form.profession}
+            onChangeText={value => setForm('profession', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Email"
+            value={form.email}
+            onChangeText={value => setForm('email', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Password"
+            value={form.password}
+            secureTextEntry
+            onChangeText={value => setForm('password', value)}
+          />
+          <Gap height={40} />
+          <Button title="Continue" onPress={onContinue} />
+        </ScrollView>
       </View>
-      {loading && <Loading />}
-    </>
+    </View>
   );
 };
 
