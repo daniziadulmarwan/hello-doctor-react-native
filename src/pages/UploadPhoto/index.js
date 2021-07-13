@@ -3,9 +3,8 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ILNullPhoto} from '../../assets';
 import {Header, Button, Link, Gap} from '../../components';
 import {ICBtnAddPhoto, ICBtnRmvPhoto} from '../../assets';
-import {colors, fonts, storeData} from '../../utils';
+import {colors, fonts, showError, storeData} from '../../utils';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
 import {Fire} from '../../configs';
 
 const UploadPhoto = ({navigation, route}) => {
@@ -20,12 +19,7 @@ const UploadPhoto = ({navigation, route}) => {
       response => {
         console.log(response);
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'ops, you did not choose any photo',
-            type: 'default',
-            backgroundColor: colors.warning,
-            color: colors.white,
-          });
+          showError('ops, you did not choose any photo');
         } else {
           let source = {uri: response.assets[0].uri};
           setPhoto(source);

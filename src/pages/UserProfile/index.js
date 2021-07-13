@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ILNullPhoto} from '../../assets';
 import {Header, Profile, List, Gap} from '../../components';
-import {colors, getData} from '../../utils';
+import {colors, getData, showError} from '../../utils';
 import {Fire} from '../../configs';
 import {showMessage} from 'react-native-flash-message';
 
@@ -29,12 +29,7 @@ const UserProfile = ({navigation}) => {
         navigation.replace('GetStarted');
       })
       .catch(err => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
   return (

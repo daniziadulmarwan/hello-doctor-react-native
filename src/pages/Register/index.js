@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
-import {Header, Input, Button, Gap, Loading} from '../../components';
-import {colors, storeData, useForm} from '../../utils';
+import {Header, Input, Button, Gap} from '../../components';
+import {colors, showError, storeData, useForm} from '../../utils';
 import {Fire} from '../../configs';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 
 const Register = ({navigation}) => {
@@ -38,12 +37,7 @@ const Register = ({navigation}) => {
       })
       .catch(error => {
         dispatch({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.white,
-        });
+        showError(error.message);
       });
   };
 

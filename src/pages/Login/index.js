@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {ILogo} from '../../assets';
-import {Input, Link, Button, Gap, Loading} from '../../components';
-import {colors, fonts, storeData, useForm} from '../../utils';
+import {Input, Link, Button, Gap} from '../../components';
+import {fonts, showError, storeData, useForm} from '../../utils';
 import {Fire} from '../../configs';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}) => {
@@ -29,12 +28,7 @@ const Login = ({navigation}) => {
       })
       .catch(error => {
         dispatch({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.white,
-        });
+        showError(error.message);
       });
   };
 
