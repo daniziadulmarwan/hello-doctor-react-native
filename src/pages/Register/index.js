@@ -19,7 +19,6 @@ const Register = ({navigation}) => {
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
-        console.log('register success', success);
         dispatch({type: 'SET_LOADING', value: false});
         setForm('reset');
         const data = {

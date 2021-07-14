@@ -67,7 +67,6 @@ const EditProfile = ({navigation}) => {
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
-        console.log('success');
         storeData('user', data);
       })
       .catch(err => {
@@ -91,7 +90,6 @@ const EditProfile = ({navigation}) => {
     launchImageLibrary(
       {includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200},
       response => {
-        console.log(response);
         if (response.didCancel || response.error) {
           showMessage({
             message: 'ops, you did not choose any photo',

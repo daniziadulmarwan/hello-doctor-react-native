@@ -17,7 +17,6 @@ const UploadPhoto = ({navigation, route}) => {
     launchImageLibrary(
       {includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200},
       response => {
-        console.log(response);
         if (response.didCancel || response.error) {
           showError('ops, you did not choose any photo');
         } else {
