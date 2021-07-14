@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {ICDokterUmum, ICDokterPsikiater, ICDokterObat} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
@@ -12,7 +12,10 @@ const DoctorCategory = ({category, onPress}) => {
       case 'psikiater':
         return <ICDokterPsikiater style={styles.illustration} />;
         break;
-      case 'dokter obat':
+      case 'dokter mata':
+        return <ICDokterPsikiater style={styles.illustration} />;
+        break;
+      case 'dokter gigi':
         return <ICDokterObat style={styles.illustration} />;
         break;
       default:

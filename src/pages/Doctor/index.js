@@ -7,20 +7,17 @@ import {
   NewsItem,
   Gap,
 } from '../../components';
-import {colors, fonts, getData, showError} from '../../utils';
-import {
-  DMRateDoctor1,
-  DMRateDoctor2,
-  DMRateDoctor3,
-  JSONCategoryDoctor,
-} from '../../assets';
+import {colors, fonts, showError} from '../../utils';
+import {DMRateDoctor1, DMRateDoctor2, DMRateDoctor3} from '../../assets';
 import {Fire} from '../../configs';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
+  const [categorys, setCategorys] = useState([]);
 
   useEffect(() => {
     getNews();
+    getCategory();
   }, []);
 
   const getNews = () => {
@@ -28,9 +25,22 @@ const Doctor = ({navigation}) => {
       .ref('news/')
       .once('value')
       .then(res => {
-        console.log(res);
         if (res.val()) {
           setNews(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+  };
+
+  const getCategory = () => {
+    Fire.database()
+      .ref('category/')
+      .once('value')
+      .then(res => {
+        if (res.val()) {
+          setCategorys(res.val());
         }
       })
       .catch(err => {
@@ -53,7 +63,7 @@ const Doctor = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap width={32} />
-                {JSONCategoryDoctor.data.map(doctor => {
+                {categorys.map(doctor => {
                   return (
                     <DoctorCategory
                       key={doctor.id}
