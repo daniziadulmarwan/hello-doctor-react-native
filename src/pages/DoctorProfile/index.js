@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {DMDoctorMessage4} from '../../assets';
 import {Header, Profile, ProfileItem, Button, Gap} from '../../components';
 import {colors} from '../../utils';
 
-const DoctorProfile = () => {
+const DoctorProfile = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="Doctor Profile" />
+      <Header title="Doctor Profile" onPress={() => navigation.goBack()} />
       <Profile
         avatar={DMDoctorMessage4}
         name="Nairoby Putri Hayza"
